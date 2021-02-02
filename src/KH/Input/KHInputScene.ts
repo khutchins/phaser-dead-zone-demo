@@ -17,7 +17,6 @@ export class KHInputScene extends Phaser.Scene implements KHIInputRegistrar {
 
     constructor() {
         super("KHInputScene");
-        console.log("Instantiated");
         this.registeredInputSets = new Set();
         KHInputScene.SharedInput = this;
     }
