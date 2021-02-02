@@ -1,19 +1,10 @@
-p# Getting Started
+# Dead Zone Demo
 
-1. Fork the project or copy the files
-2. Make a new terminal: Terminal -> New Terminal
-3. npm install
-4. Wait for dependencies to install.
-5. Update package.json fields to be relevant to your project.
+This is a demonstration to go along with the blog post at https://blog.khutchins.com/posts/phaser-3-inputs-ab/ that contains a few different ways to implement dead zones for input axes.
 
-## Maybe Do These
+## Setup
 
-### Auto-push to itch
+I haven't tested these steps myself, but running this should be as simple as:
 
-If you want to be able to quickly publish to itch, you can modify the build:prod line to something like this (butler must be installed):
-
-```
-"build:prod": "webpack --config webpack.prod.js && butler push build your-name/your-phaser-project:html",
-```
-
-Then, when you hit build:prod, it will upload to itch. It's probably best to disable this once you've released to avoid bad pushes.
+1. Run `npm install` in the base directory.
+2. Run `npm run dev` to run a local version of the game.
