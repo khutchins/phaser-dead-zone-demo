@@ -35,6 +35,12 @@ export class KHInputSet {
         return this.registrar != null;
     }
 
+    update(now: number, delta: number) {
+        for (let i = 0; i < this.inputs.length; i++) {
+            this.inputs[i].updateDerivedInput(now, delta);
+        }
+    }
+
     registerWith(registrar: KHIInputRegistrar) {
         if (this.registrar) {
             console.warn(`Input set ${this.identifier} already registered. Unregistering from previous set.`);

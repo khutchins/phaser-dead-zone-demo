@@ -1,3 +1,4 @@
+import { KHEventHandler } from "../KHEventHandler";
 import { KHInputAxis } from "./KHInputAxis";
 import { KHInputKey } from "./KHInputKey";
 import { KHInputProvider } from "./KHInputProvider";
@@ -30,14 +31,22 @@ export class KHInputProviderController extends KHInputProvider {
     buttons: Map<KHPadInput, KHInputKey>;
     axis: Map<KHPadAxis, KHInputAxis>;
     gamePadNumber: number;
+    private connected: boolean;
+    emitter: KHEventHandler;
 
     static INPUT_TYPE: string = "controller";
+
+    static EVENT_CONTROLLER_CONNECTED = "cc";
+    static EVENT_CONTROLLER_DISCONNECTED = "cd";
 
     constructor(scene: Phaser.Scene, gamePadNumber: number) {
         super();
         this.scene = scene;
-
         this.gamePadNumber = gamePadNumber;
+        this.emitter = new KHEventHandler([
+            KHInputProviderController.EVENT_CONTROLLER_DISCONNECTED, 
+            KHInputProviderController.EVENT_CONTROLLER_CONNECTED
+        ]);
 
         this.buttons = new Map();
         this.buttons.set(KHPadInput.A, new KHInputKey());
@@ -58,6 +67,8 @@ export class KHInputProviderController extends KHInputProvider {
         this.axis.set(KHPadAxis.LeftStickY, new KHInputAxis());
         this.axis.set(KHPadAxis.RightStickX, new KHInputAxis());
         this.axis.set(KHPadAxis.RightStickY, new KHInputAxis());
+
+        this.connected = false;
     }
 
     tryVibrate(duration: number, weak: number, strong: number) {
@@ -82,10 +93,27 @@ export class KHInputProviderController extends KHInputProvider {
         }
     }
 
-    updateDisconnect() {
+    protected updateConnect(gamepad: Phaser.Input.Gamepad.Gamepad) {
+        if (this.connected) {
+            return;
+        }
+        this.connected = true;
+        this.emitter.emitEvent(
+            KHInputProviderController.EVENT_CONTROLLER_CONNECTED, 
+            { gamepad: gamepad }
+        )
+    }
+
+    protected updateDisconnect() {
+        if (!this.connected) {
+            return;
+        }
+        this.connected = false;
         this.buttons.forEach((value, key) => {
             value.update(false);
         })
+        this.emitter.emitEvent(
+            KHInputProviderController.EVENT_CONTROLLER_DISCONNECTED, {});
     }
 
     getGamepad(): Phaser.Input.Gamepad.Gamepad | null {
@@ -98,6 +126,8 @@ export class KHInputProviderController extends KHInputProvider {
             this.updateDisconnect();
             return null;
         }
+
+        this.updateConnect(gamePad);
         return gamePad;
     }
 

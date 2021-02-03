@@ -59,9 +59,7 @@ export class KHInputScene extends Phaser.Scene implements KHIInputRegistrar {
         // registered, as this guarantees that a derived input's inputs will
         // be updated before it is, preventing extra input latency.
         this.registeredInputSets.forEach(function(value) {
-            for (let i = 0; i < value.inputs.length; i++) {
-                value.inputs[i].updateDerivedInput(now, delta);
-            }
+            value.update(now, delta);
         })
     }
 }
