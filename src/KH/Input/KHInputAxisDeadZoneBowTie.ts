@@ -27,8 +27,8 @@ export class KHInputAxisDeadZoneBowTie extends KHInputAxisDerived {
         super(inputSet);
         this.primaryAxis = primaryAxis;
         this.secondaryAxis = secondaryAxis;
-        this.radialDeadZone = Math.min(radialDeadZone, 0.999);
-        this.maxAxialDeadZone = Math.min(maxAxialDeadZone, 0.999);
+        this.radialDeadZone = radialDeadZone;
+        this.maxAxialDeadZone = maxAxialDeadZone;
     }
 
     updateDerivedInput(now: number, delta: number) {
