@@ -31,7 +31,7 @@ export class KHInputAxisDeadZoneScaledRadial extends KHInputAxisDerived {
         let primary = this.primaryAxis.getValue();
         let secondary = this.secondaryAxis.getValue();
         const vector = new Phaser.Math.Vector2(primary, secondary);
-        const magnitude = vector.length();
+        const magnitude = Math.min(1, vector.length());
         if (magnitude < this.deadZone) {
             this.update(0);
         } else {
